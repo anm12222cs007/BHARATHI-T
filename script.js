@@ -55,7 +55,7 @@ searchInput.addEventListener('keyup', async (event) => {
 
 // Load default city weather
 window.addEventListener('load', async () => {
-    const defaultCity = 'London';
+    const defaultCity = 'CITY NAME';
     const weatherData = await getWeatherData(defaultCity);
     updateWeatherUI(weatherData);
 });
