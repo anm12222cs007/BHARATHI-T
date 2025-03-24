@@ -3,36 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather Dashboard</title>
+    <title>Weather Dashboard Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <div class="search-box">
-            <input type="text" placeholder="Enter city name" id="search-input">
-            <button id="search-button">Search</button>
+        <div class="weather-side">
+            <div class="weather-gradient"></div>
+            <div class="date-container">
+                <h2 class="date-dayname">Tuesday</h2>
+                <span class="date-day">15 Jan 2024</span>
+                <span class="location">London, GB</span>
+            </div>
+            <div class="weather-container">
+                <img src="" alt="weather" class="weather-icon">
+                <h1 class="weather-temp">29°C</h1>
+                <h3 class="weather-desc">Sunny</h3>
+            </div>
         </div>
-        
-        <div class="weather-info">
-            <div class="location">
-                <h2 id="city">City Name</h2>
-                <p id="date">Date</p>
+        <div class="info-side">
+            <div class="search-container">
+                <input type="text" placeholder="Search for a city..." class="search-input">
+                <button class="search-button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                </button>
             </div>
-            
-            <div class="weather-details">
-                <img id="weather-icon" src="" alt="weather icon">
-                <h1 id="temperature">--°C</h1>
-                <p id="description">Weather Description</p>
-            </div>
-            
-            <div class="additional-info">
-                <div class="info-item">
-                    <span>Humidity</span>
-                    <p id="humidity">--%</p>
+            <div class="today-info">
+                <div class="precipitation">
+                    <span class="title">HUMIDITY</span>
+                    <span class="value humidity">89 %</span>
                 </div>
-                <div class="info-item">
-                    <span>Wind Speed</span>
-                    <p id="wind-speed">-- km/h</p>
+                <div class="wind">
+                    <span class="title">WIND</span>
+                    <span class="value wind-speed">8 km/h</span>
+                </div>
+                <div class="temperature">
+                    <span class="title">FEELS LIKE</span>
+                    <span class="value feels-like">27°C</span>
+                </div>
+            </div>
+            <div class="week-container">
+                <div class="pressure-container">
+                    <span class="title">PRESSURE</span>
+                    <span class="value pressure">1014 hPa</span>
+                </div>
+                <div class="visibility-container">
+                    <span class="title">VISIBILITY</span>
+                    <span class="value visibility">10 km</span>
                 </div>
             </div>
         </div>
