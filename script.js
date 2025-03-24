@@ -1,9 +1,33 @@
 const apiKey = '1e3e8f230b6064d27976e41163a82b77'; // Get from OpenWeatherMap
 const apiUrl = 'https://api.openweathermap.org/data/2.5/weather?units=metric&q=';
 
+// DOM Elements
 const searchInput = document.querySelector('.search-input');
 const searchButton = document.querySelector('.search-button');
-const locationButton = document.querySelector('.location-button');
+
+// Weather backgrounds based on conditions
+const weatherBackgrounds = {
+    'Clear': 'https://images.unsplash.com/photo-1601297183305-6df142704ea2?w=1600',
+    'Clouds': 'https://images.unsplash.com/photo-1534088568595-a066f410bcda?w=1600',
+    'Rain': 'https://images.unsplash.com/photo-1519692933481-e162a57d6721?w=1600',
+    'Snow': 'https://images.unsplash.com/photo-1516431883659-655d5ef1a668?w=1600',
+    'Thunderstorm': 'https://images.unsplash.com/photo-1605727216801-e27ce1d0cc28?w=1600',
+    'Mist': 'https://images.unsplash.com/photo-1543968996-ee822b8176ba?w=1600'
+};
+
+// Update date and time
+function updateDateTime() {
+    const now = new Date();
+    
+    document.querySelector('.date-dayname').textContent = 
+        now.toLocaleDateString('en-US', { weekday: 'long' });
+    document.querySelector('.date-day').textContent = 
+        now.toLocaleDateString('en-US', { 
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
+        });
+}
 
 async function checkWeather(city) {
     try {
@@ -19,58 +43,41 @@ async function checkWeather(city) {
 }
 
 function updateWeatherUI(data) {
-    // Update date
-    const date = new Date();
-    document.querySelector('.date-dayname').textContent = 
-        date.toLocaleDateString('en-US', { weekday: 'long' });
-    document.querySelector('.date-day').textContent = 
-        date.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
-    
-    // Update location
-    document.querySelector('.location').textContent = `${data.name}, ${data.sys.country}`;
-    
-    // Update temperature and description
+    // Update location and basic info
+    document.querySelector('.location').textContent = 
+        `${data.name}, ${data.sys.country}`;
     document.querySelector('.weather-temp').textContent = 
-        Math.round(data.main.temp) + '°C';
+        `${Math.round(data.main.temp)}°C`;
     document.querySelector('.weather-desc').textContent = 
         data.weather[0].description;
     
     // Update weather details
     document.querySelector('.humidity').textContent = 
-        data.main.humidity + ' %';
+        `${data.main.humidity} %`;
     document.querySelector('.wind-speed').textContent = 
-        data.wind.speed + ' km/h';
+        `${data.wind.speed} km/h`;
     document.querySelector('.feels-like').textContent = 
-        Math.round(data.main.feels_like) + '°C';
+        `${Math.round(data.main.feels_like)}°C`;
     document.querySelector('.pressure').textContent = 
-        data.main.pressure + ' hPa';
+        `${data.main.pressure} hPa`;
     document.querySelector('.visibility').textContent = 
-        (data.visibility / 1000) + ' km';
+        `${(data.visibility / 1000)} km`;
     
     // Update weather icon
     const weatherIcon = document.querySelector('.weather-icon');
     weatherIcon.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+    
+    // Update background based on weather
+    updateBackground(data.weather[0].main);
 }
 
-async function getCurrentLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(async position => {
-            try {
-                const response = await fetch(
-                    `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=metric&appid=${apiKey}`
-                );
-                const data = await response.json();
-                updateWeatherUI(data);
-            } catch (error) {
-                alert('Error fetching weather data');
-            }
-        }, error => {
-            alert('Unable to get location');
-        });
-    } else {
-        alert('Geolocation is not supported by this browser');
-    }
+function updateBackground(weatherType) {
+    const weatherSide = document.querySelector('.weather-side');
+    const backgroundUrl = weatherBackgrounds[weatherType] || weatherBackgrounds.Clear;
+    weatherSide.style.backgroundImage = `url('${backgroundUrl}')`;
 }
+
+// Event Listeners
 searchButton.addEventListener('click', () => {
     const city = searchInput.value.trim();
     if (city) checkWeather(city);
@@ -83,5 +90,7 @@ searchInput.addEventListener('keypress', (event) => {
     }
 });
 
-locationButton.addEventListener('click', getCurrentLocation);
-checkWeather('city name');
+// Initialize
+setInterval(updateDateTime, 1000);
+updateDateTime();
+checkWeather('London');
